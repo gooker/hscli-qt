@@ -19,6 +19,8 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QDebug>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
                                           ui(new Ui::MainWindow)
@@ -38,6 +40,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     }
     connect(ui->button_UdpSend, SIGNAL(clicked()), this, SLOT(onUdpSendMessage()));         // UDP can send message directly without connection
     connect(ui->lineEdit_UdpSend, SIGNAL(returnPressed()), this, SLOT(onUdpSendMessage())); // UDP can send message directly without connection
+
+    connect(ui->comboBox_Interface, SIGNAL(currentIndexChanged(int)), this, SLOT(ComboxPortSelect(int)));
 
     // buttons
     connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientButtonClicked()));
@@ -65,10 +69,10 @@ void MainWindow::onTcpClientButtonClicked()
 
     if (setupConnection(TCPCLIENT))
     {
-        ui->statusBar->showMessage(messageTCP + "Connecting to " + tcpClientTargetAddr.toString() + ": " + QString::number(tcpClientTargetPort), 0);
+        ui->statusBar->showMessage(messageTCP + "连接到 " + tcpClientTargetAddr.toString() + ": " + QString::number(tcpClientTargetPort), 0);
         ui->lineEdit_TcpClientTargetIP->setDisabled(true);
         ui->lineEdit_TcpClientTargetPort->setDisabled(true);
-        ui->button_TcpClient->setText("Stop");
+        ui->button_TcpClient->setText("停止");
 
         connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientStopButtonClicked()));
         connect(mytcpclient, SIGNAL(myClientConnected(QString, quint16)), this, SLOT(onTcpClientNewConnection(QString, quint16)));
@@ -91,13 +95,13 @@ void MainWindow::onTcpClientNewConnection(const QString &from, quint16 port)
     connect(mytcpclient, SIGNAL(myClientDisconnected()), this, SLOT(onTcpClientDisconnected()));
 
     ui->button_TcpClient->setDisabled(false);
-    ui->button_TcpClient->setText("Disconnect");
+    ui->button_TcpClient->setText("断开");
 
     ui->button_TcpClientSend->setDisabled(false);
     ui->lineEdit_TcpClientSend->setDisabled(false);
     ui->textBrowser_TcpClientMessage->setDisabled(false);
 
-    ui->statusBar->showMessage(messageTCP + "Connected to " + from + ": " + QString::number(port), 0);
+    ui->statusBar->showMessage(messageTCP + "连接到 " + from + ": " + QString::number(port), 0);
     connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientDisconnectButtonClicked()));
 
     connect(mytcpclient, SIGNAL(newMessage(QString, QString)), this, SLOT(onTcpClientAppendMessage(QString, QString)));
@@ -114,10 +118,10 @@ void MainWindow::onTcpClientStopButtonClicked()
 {
     disconnect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientStopButtonClicked()));
 
-    ui->statusBar->showMessage(messageTCP + "Stopped", 2000);
+    ui->statusBar->showMessage(messageTCP + "停止", 2000);
     disconnect(mytcpclient, SIGNAL(myClientConnected(QString, quint16)), this, SLOT(onTcpClientNewConnection(QString, quint16)));
     disconnect(mytcpclient, SIGNAL(connectionFailed()), this, SLOT(onTcpClientTimeOut()));
-    ui->button_TcpClient->setText("Connect");
+    ui->button_TcpClient->setText("连接");
     mytcpclient->abortConnection();
     ui->lineEdit_TcpClientTargetIP->setDisabled(false);
     ui->lineEdit_TcpClientTargetPort->setDisabled(false);
@@ -136,12 +140,12 @@ void MainWindow::onTcpClientStopButtonClicked()
  ***********************************/
 void MainWindow::onTcpClientTimeOut()
 {
-    ui->statusBar->showMessage(messageTCP + "Connection time out", 2000);
+    ui->statusBar->showMessage(messageTCP + "连接超时", 2000);
     disconnect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientStopButtonClicked()));
     disconnect(mytcpclient, SIGNAL(myClientConnected(QString, quint16)), this, SLOT(onTcpClientNewConnection(QString, quint16)));
     disconnect(mytcpclient, SIGNAL(connectionFailed()), this, SLOT(onTcpClientTimeOut()));
 
-    ui->button_TcpClient->setText("Connect");
+    ui->button_TcpClient->setText("连接");
     ui->lineEdit_TcpClientTargetIP->setDisabled(false);
     ui->lineEdit_TcpClientTargetPort->setDisabled(false);
 
@@ -166,13 +170,13 @@ void MainWindow::onTcpClientDisconnectButtonClicked()
  ***********************************/
 void MainWindow::onTcpClientDisconnected()
 {
-    ui->statusBar->showMessage(messageTCP + "Disconnected from server", 2000);
+    ui->statusBar->showMessage(messageTCP + "与服务器断开连接", 2000);
     disconnect(mytcpclient, SIGNAL(myClientDisconnected()), this, SLOT(onTcpClientDisconnected()));
     disconnect(mytcpclient, SIGNAL(newMessage(QString, QString)), this, SLOT(onTcpClientAppendMessage(QString, QString)));
     disconnect(ui->button_TcpClientSend, SIGNAL(clicked()), this, SLOT(onTcpClientSendMessage()));
     disconnect(ui->lineEdit_TcpClientSend, SIGNAL(returnPressed()), this, SLOT(onTcpClientSendMessage()));
     disconnect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientDisconnectButtonClicked()));
-    ui->button_TcpClient->setText("Connect");
+    ui->button_TcpClient->setText("连接");
 
     ui->button_TcpClientSend->setDisabled(true);
     ui->lineEdit_TcpClientSend->setDisabled(true);
@@ -259,9 +263,9 @@ void MainWindow::onTcpServerButtonClicked()
 
     if (setupConnection(TCPSERVER))
     {
-        ui->statusBar->showMessage(messageTCP + "Listerning to " + localAddr.toString() + ": " + QString::number(tcpServerListenPort), 0);
+        ui->statusBar->showMessage(messageTCP + "监听 " + localAddr.toString() + ": " + QString::number(tcpServerListenPort), 0);
         connect(ui->button_TcpServer, SIGNAL(clicked()), this, SLOT(onTcpServerStopButtonClicked()));
-        ui->button_TcpServer->setText("Stop");
+        ui->button_TcpServer->setText("停止");
         ui->lineEdit_TcpServerListenPort->setDisabled(true);
         connect(mytcpserver, SIGNAL(myServerConnected(QString, quint16)), this, SLOT(onTcpServerNewConnection(QString, quint16)));
     }
@@ -285,7 +289,7 @@ void MainWindow::onTcpServerNewConnection(const QString &from, quint16 port)
     disconnect(mytcpserver, SIGNAL(myServerConnected(QString, quint16)), this, SLOT(onTcpServerNewConnection(QString, quint16)));
 
     disconnect(ui->button_TcpServer, SIGNAL(clicked()), this, SLOT(onTcpServerStopButtonClicked()));
-    ui->button_TcpServer->setText("Disconnect");
+    ui->button_TcpServer->setText("断开");
     connect(ui->button_TcpServer, SIGNAL(clicked()), this, SLOT(onTcpServerDisconnectButtonClicked()));
 
     connect(mytcpserver, SIGNAL(myServerDisconnected()), this, SLOT(onTcpServerDisconnected()));
@@ -310,7 +314,7 @@ void MainWindow::onTcpServerStopButtonClicked()
     ui->statusBar->showMessage(messageTCP + "Stopped", 2000);
     disconnect(mytcpserver, SIGNAL(myServerConnected(QString, quint16)));
     mytcpserver->stopListening();
-    ui->button_TcpServer->setText("Start");
+    ui->button_TcpServer->setText("开始");
     ui->lineEdit_TcpServerListenPort->setDisabled(false);
 
     ui->button_TcpServerSend->setDisabled(true);
@@ -350,7 +354,7 @@ void MainWindow::onTcpServerDisconnected()
     disconnect(ui->lineEdit_TcpServerSend, SIGNAL(returnPressed()), this, SLOT(onTcpServerSendMessage()));
 
     connect(ui->button_TcpServer, SIGNAL(clicked()), this, SLOT(onTcpServerStopButtonClicked()));
-    ui->button_TcpServer->setText("Stop");
+    ui->button_TcpServer->setText("停止");
     connect(mytcpserver, SIGNAL(myServerConnected(QString, quint16)), this, SLOT(onTcpServerNewConnection(QString, quint16)));
 }
 
@@ -425,9 +429,9 @@ void MainWindow::onUdpButtonClicked()
 
     if (setupConnection(UDPSERVER))
     {
-        ui->statusBar->showMessage(messageUDP + "Listerning to " + localAddr.toString() + ": " + QString::number(udpListenPort), 0);
+        ui->statusBar->showMessage(messageUDP + "监听 " + localAddr.toString() + ": " + QString::number(udpListenPort), 0);
         connect(ui->button_Udp, SIGNAL(clicked()), this, SLOT(onUdpStopButtonClicked()));
-        ui->button_Udp->setText("Stop");
+        ui->button_Udp->setText("停止");
 
         ui->button_UdpSend->setDisabled(false);
         ui->lineEdit_UdpSend->setDisabled(false);
@@ -438,7 +442,7 @@ void MainWindow::onUdpButtonClicked()
     }
     else
     {
-        ui->statusBar->showMessage(messageUDP + "Failed to listen to: " + localAddr.toString() + ": " + QString::number(udpListenPort), 2000);
+        ui->statusBar->showMessage(messageUDP + "监听失败: " + localAddr.toString() + ": " + QString::number(udpListenPort), 2000);
         connect(ui->button_Udp, SIGNAL(clicked()), this, SLOT(onUdpButtonClicked()));
     }
 
@@ -454,9 +458,9 @@ void MainWindow::onUdpStopButtonClicked()
 {
     disconnect(ui->button_Udp, SIGNAL(clicked()), this, SLOT(onUdpStopButtonClicked()));
 
-    ui->statusBar->showMessage(messageUDP + "Stopped", 2000);
+    ui->statusBar->showMessage(messageUDP + "停止了", 2000);
     disconnect(myudp, SIGNAL(newMessage(QString, QString)), this, SLOT(onUdpAppendMessage(QString, QString)));
-    ui->button_Udp->setText("Start");
+    ui->button_Udp->setText("开始");
     myudp->unbindPort();
     ui->lineEdit_UdpListenPort->setDisabled(false);
 
@@ -553,17 +557,6 @@ void MainWindow::initUI()
 
     tableFormat.setBorder(0);
 
-    ui->label_AppVersion->setText(APPVERSION);
-
-    ui->label_GitHub->setText("<a href=\"https://github.com/rookiepeng/Socket-Test-QT/\">Source codes on GitHub</a>");
-    ui->label_GitHub->setTextFormat(Qt::RichText);
-    ui->label_GitHub->setTextInteractionFlags(Qt::TextBrowserInteraction);
-    ui->label_GitHub->setOpenExternalLinks(true);
-
-    ui->label_HomePage->setText("<a href=\"https://zpeng.me/\">My home page</a>");
-    ui->label_HomePage->setTextFormat(Qt::RichText);
-    ui->label_HomePage->setTextInteractionFlags(Qt::TextBrowserInteraction);
-    ui->label_HomePage->setOpenExternalLinks(true);
 }
 
 /***********************************
@@ -613,25 +606,31 @@ void MainWindow::findLocalIPs()
 {
     ui->comboBox_Interface->clear();
     interfaceList.clear();
-    QList<QNetworkInterface> listInterface = QNetworkInterface::allInterfaces();
-    for (int i = 0; i < listInterface.size(); ++i)
-    {
-        //qDebug()<<listInterface.at(i).name();
-        //if (listInterface.at(i).humanReadableName().contains("Wi-Fi") || listInterface.at(i).humanReadableName().contains("wlp"))
-        {
-            interfaceList.append(listInterface.at(i));
-        }
-    }
+    auto list = QNetworkInterface::allInterfaces();
+    foreach (QNetworkInterface interface, list) {
+        // 1. 首先判断是不是以太网，过滤WiFi
+//        if (interface.type() != QNetworkInterface::Ethernet)
+//            continue;
+        if (interface.humanReadableName().contains("Loopback"))
+            continue;
 
-    if (interfaceList.isEmpty())
-    {
-        // TODO wifilist is empty
-    }
-    else
-    {
-        for (int j = 0; j < interfaceList.size(); ++j)
-        {
-            ui->comboBox_Interface->addItem(interfaceList.at(j).humanReadableName());
+        // 2. 如果有安装VMware虚拟机的话，会出现两个虚拟网卡
+        // 匹配关键字"VMware"。来过滤虚拟网卡
+//        if (interface.humanReadableName().contains("VMware"))
+//            continue;
+
+        // 3. 一般都会有两个ip地址，一个ipv4一个ipv6地址
+        // 根据协议版本，来过滤掉ipv6地址
+        foreach (auto entry ,interface.addressEntries()) {
+            if (entry.ip().protocol() == QAbstractSocket::IPv4Protocol)
+            {
+                Port_IP tmp;
+                tmp.ip = entry.ip().toString();
+                tmp.name = interface.humanReadableName();
+                interfaceList.push_back(tmp);
+                ui->comboBox_Interface->addItem(tmp.name);
+                continue;
+            }
         }
     }
 }
@@ -658,27 +657,20 @@ void MainWindow::loadSettings()
 
     int index = settings.value("interfaceIndex", 0).toInt();
     if (interfaceList.count() == 0) return;
-    if (ui->comboBox_Interface->count() >= index)
-    {
-        ui->comboBox_Interface->setCurrentIndex(index);
-        for (int i = 0; i < interfaceList.at(index).addressEntries().size(); ++i)
-        {
-            if (interfaceList.at(index).addressEntries().at(i).ip().protocol() == QAbstractSocket::IPv4Protocol)
-            {
-                ui->label_LocalIP->setText(interfaceList.at(index).addressEntries().at(i).ip().toString());
-            }
-        }
+
+    foreach (auto entry ,interfaceList) {
+        if(ui->comboBox_Interface->currentText() == entry.name)
+            ui->label_LocalIP->setText(entry.ip);
     }
-    else if (ui->comboBox_Interface->count() > 0 && ui->comboBox_Interface->count() < index)
-    {
-        ui->comboBox_Interface->setCurrentIndex(0);
-        for (int i = 0; i < interfaceList.at(0).addressEntries().size(); ++i)
-        {
-            if (interfaceList.at(0).addressEntries().at(i).ip().protocol() == QAbstractSocket::IPv4Protocol)
-            {
-                ui->label_LocalIP->setText(interfaceList.at(0).addressEntries().at(i).ip().toString());
-            }
-        }
+}
+
+void MainWindow::ComboxPortSelect(int index)
+{
+//    QMessageBox::information(this, "title", "your select item is " + text, NULL);
+
+    foreach (auto entry ,interfaceList) {
+        if(ui->comboBox_Interface->currentText() == entry.name)
+            ui->label_LocalIP->setText(entry.ip);
     }
 }
 

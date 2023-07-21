@@ -84,6 +84,7 @@ class MainWindow : public QMainWindow
     void onUdpAppendMessage(const QString &from, const QString &message);
 
     void onRefreshButtonClicked();
+    void ComboxPortSelect(int index);
 
   public:
     explicit MainWindow(QWidget *parent = 0);
@@ -92,6 +93,8 @@ class MainWindow : public QMainWindow
   protected:
     void closeEvent(QCloseEvent *event);
 
+//    signals:
+//     void currentIndexChanged(int);
   private:
     Ui::MainWindow *ui;
     void initUI();
@@ -118,9 +121,12 @@ class MainWindow : public QMainWindow
     quint16 udpListenPort;
     QHostAddress udpTargetAddr;
     quint16 udpTargetPort;
-
+    struct Port_IP {
+       QString name;
+       QString ip;
+    };
     QString settingsFileDir;
-    QList<QNetworkInterface> interfaceList;
+    QList<Port_IP> interfaceList;
     quint8 type;
 
     QString messageUDP = "[UDP] ";

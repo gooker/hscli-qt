@@ -21,14 +21,48 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QGroupBox" name="groupBox_3">
       <property name="title">
-       <string>Network Interface:</string>
+       <string/>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="leftMargin">
+        <number>1</number>
+       </property>
+       <property name="topMargin">
+        <number>1</number>
+       </property>
+       <property name="rightMargin">
+        <number>1</number>
+       </property>
+       <property name="bottomMargin">
+        <number>1</number>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>网卡:</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QComboBox" name="comboBox_Interface">
            <property name="sizePolicy">
@@ -88,7 +122,7 @@
          <item>
           <widget class="QPushButton" name="button_Refresh">
            <property name="text">
-            <string>Refresh</string>
+            <string>刷新</string>
            </property>
           </widget>
          </item>
@@ -96,45 +130,6 @@
        </item>
       </layout>
      </widget>
-    </item>
-    <item>
-     <spacer name="verticalSpacer_3">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>10</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
-     <widget class="Line" name="line_6">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <spacer name="verticalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>10</height>
-       </size>
-      </property>
-     </spacer>
     </item>
     <item>
      <widget class="QTabWidget" name="tabWidget">
@@ -149,12 +144,39 @@
         <string>TCP Client</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_5">
+        <property name="leftMargin">
+         <number>1</number>
+        </property>
+        <property name="topMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>1</number>
+        </property>
+        <property name="bottomMargin">
+         <number>1</number>
+        </property>
         <item>
          <widget class="QGroupBox" name="groupBox_4">
           <property name="title">
-           <string>Connect to:</string>
+           <string/>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
+           <property name="spacing">
+            <number>1</number>
+           </property>
+           <property name="leftMargin">
+            <number>1</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>1</number>
+           </property>
+           <property name="bottomMargin">
+            <number>1</number>
+           </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_7">
              <item>
@@ -256,7 +278,7 @@
              <item>
               <widget class="QPushButton" name="button_TcpClient">
                <property name="text">
-                <string>Connect</string>
+                <string>连接</string>
                </property>
               </widget>
              </item>
@@ -284,9 +306,21 @@
         <item>
          <widget class="QGroupBox" name="groupBox_2">
           <property name="title">
-           <string>Message:</string>
+           <string>信息:</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="leftMargin">
+            <number>1</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>1</number>
+           </property>
+           <property name="bottomMargin">
+            <number>1</number>
+           </property>
            <item>
             <widget class="QTextBrowser" name="textBrowser_TcpClientMessage"/>
            </item>
@@ -305,7 +339,7 @@
              <item>
               <widget class="QPushButton" name="button_TcpClientSend">
                <property name="text">
-                <string>Send</string>
+                <string>发送</string>
                </property>
               </widget>
              </item>
@@ -321,12 +355,36 @@
         <string>TCP Server</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_7">
+        <property name="leftMargin">
+         <number>1</number>
+        </property>
+        <property name="topMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>1</number>
+        </property>
+        <property name="bottomMargin">
+         <number>1</number>
+        </property>
         <item>
          <widget class="QGroupBox" name="groupBox">
           <property name="title">
-           <string>Listen on:</string>
+           <string/>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
+           <property name="leftMargin">
+            <number>1</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>1</number>
+           </property>
+           <property name="bottomMargin">
+            <number>1</number>
+           </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
@@ -380,7 +438,7 @@
              <item>
               <widget class="QPushButton" name="button_TcpServer">
                <property name="text">
-                <string>Start</string>
+                <string>开始</string>
                </property>
               </widget>
              </item>
@@ -408,9 +466,21 @@
         <item>
          <widget class="QGroupBox" name="groupBox_5">
           <property name="title">
-           <string>Message:</string>
+           <string>信息:</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_8">
+           <property name="leftMargin">
+            <number>1</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>1</number>
+           </property>
+           <property name="bottomMargin">
+            <number>1</number>
+           </property>
            <item>
             <widget class="QTextBrowser" name="textBrowser_TcpServerMessage"/>
            </item>
@@ -429,7 +499,7 @@
              <item>
               <widget class="QPushButton" name="button_TcpServerSend">
                <property name="text">
-                <string>Send</string>
+                <string>发送</string>
                </property>
               </widget>
              </item>
@@ -445,12 +515,36 @@
         <string>UDP</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_9">
+        <property name="leftMargin">
+         <number>1</number>
+        </property>
+        <property name="topMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>1</number>
+        </property>
+        <property name="bottomMargin">
+         <number>1</number>
+        </property>
         <item>
          <widget class="QGroupBox" name="groupBox_6">
           <property name="title">
-           <string>Listen on:</string>
+           <string/>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_10">
+           <property name="leftMargin">
+            <number>1</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>1</number>
+           </property>
+           <property name="bottomMargin">
+            <number>1</number>
+           </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
@@ -498,7 +592,7 @@
              <item>
               <widget class="QPushButton" name="button_Udp">
                <property name="text">
-                <string>Start</string>
+                <string>开始</string>
                </property>
               </widget>
              </item>
@@ -526,9 +620,21 @@
         <item>
          <widget class="QGroupBox" name="groupBox_8">
           <property name="title">
-           <string>Message:</string>
+           <string>信息:</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_11">
+           <property name="leftMargin">
+            <number>1</number>
+           </property>
+           <property name="topMargin">
+            <number>1</number>
+           </property>
+           <property name="rightMargin">
+            <number>1</number>
+           </property>
+           <property name="bottomMargin">
+            <number>1</number>
+           </property>
            <item>
             <widget class="QTextBrowser" name="textBrowser_UdpMessage"/>
            </item>
@@ -538,6 +644,18 @@
               <string>Send to:</string>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_12">
+              <property name="leftMargin">
+               <number>1</number>
+              </property>
+              <property name="topMargin">
+               <number>1</number>
+              </property>
+              <property name="rightMargin">
+               <number>1</number>
+              </property>
+              <property name="bottomMargin">
+               <number>1</number>
+              </property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_8">
                 <item>
@@ -651,7 +769,7 @@
                 <item>
                  <widget class="QPushButton" name="button_UdpSend">
                   <property name="text">
-                   <string>Send</string>
+                   <string>发送</string>
                   </property>
                  </widget>
                 </item>
@@ -665,115 +783,6 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>About</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_13">
-        <item>
-         <spacer name="verticalSpacer_7">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_5">
-          <property name="font">
-           <font>
-            <pointsize>18</pointsize>
-           </font>
-          </property>
-          <property name="cursor">
-           <cursorShape>ArrowCursor</cursorShape>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="text">
-           <string>Socket Test</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-          <property name="textInteractionFlags">
-           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_AppVersion">
-          <property name="text">
-           <string>V 1.1</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-          <property name="textInteractionFlags">
-           <set>Qt::LinksAccessibleByMouse</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>By: Zach (Zhengyu) Peng</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_GitHub">
-          <property name="text">
-           <string>Source codes on Github</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-          <property name="textInteractionFlags">
-           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_HomePage">
-          <property name="text">
-           <string>My home page</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-          <property name="textInteractionFlags">
-           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -784,7 +793,7 @@
      <x>0</x>
      <y>0</y>
      <width>500</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>
